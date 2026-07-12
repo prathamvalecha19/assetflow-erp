@@ -22,7 +22,7 @@ const Signup = () => {
       const res = await register(email, name, password);
       if (res === true) {
         // Send user to login page after successful registration
-        navigate('/login');
+        navigate('/login', { state: { email, password } });
       } else {
         setError(res.error || 'Registration failed.');
         setIsLoading(false);
