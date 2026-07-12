@@ -9,7 +9,7 @@ const DatabaseAdmin = () => {
   const fetchTableData = async (table) => {
     setIsLoading(true);
     try {
-      const res = await fetch(http://localhost:8000/api/ + table);
+      const res = await fetch("http://localhost:8000/api/" + table);
       const json = await res.json();
       setData(json);
     } catch (e) {
@@ -25,33 +25,33 @@ const DatabaseAdmin = () => {
 
   return (
     <div style={{ display: 'flex', height: '100vh', backgroundColor: '#0f172a', color: '#f8fafc', fontFamily: 'monospace' }}>
-      
+
       {/* Sidebar Navigation */}
       <div style={{ width: '250px', backgroundColor: '#1e293b', padding: '20px', borderRight: '1px solid #334155' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#38bdf8', marginBottom: '40px', fontSize: '18px', fontWeight: 'bold' }}>
           <FiServer size={24} /> Raw DB Access
         </div>
-        
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <button 
+          <button
             onClick={() => setActiveTable('users')}
             style={{ textAlign: 'left', padding: '12px', background: activeTable === 'users' ? '#38bdf822' : 'transparent', color: activeTable === 'users' ? '#38bdf8' : '#cbd5e1', border: 'none', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }}
           >
             <FiUsers /> Users Table
           </button>
-          <button 
+          <button
             onClick={() => setActiveTable('assets')}
             style={{ textAlign: 'left', padding: '12px', background: activeTable === 'assets' ? '#38bdf822' : 'transparent', color: activeTable === 'assets' ? '#38bdf8' : '#cbd5e1', border: 'none', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }}
           >
             <FiBox /> Assets Table
           </button>
-          <button 
+          <button
             onClick={() => setActiveTable('bookings')}
             style={{ textAlign: 'left', padding: '12px', background: activeTable === 'bookings' ? '#38bdf822' : 'transparent', color: activeTable === 'bookings' ? '#38bdf8' : '#cbd5e1', border: 'none', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }}
           >
             <FiCalendar /> Bookings Table
           </button>
-          <button 
+          <button
             onClick={() => setActiveTable('maintenance')}
             style={{ textAlign: 'left', padding: '12px', background: activeTable === 'maintenance' ? '#38bdf822' : 'transparent', color: activeTable === 'maintenance' ? '#38bdf8' : '#cbd5e1', border: 'none', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }}
           >
