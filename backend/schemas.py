@@ -1,14 +1,44 @@
 from pydantic import BaseModel, ConfigDict
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
+
+# --- DEPARTMENTS ---
+class DepartmentBase(BaseModel):
+    name: str
+
+class DepartmentCreate(DepartmentBase):
+    pass
+
+class DepartmentResponse(DepartmentBase):
+    id: int
+    model_config = ConfigDict(from_attributes=True)
+
+# --- CATEGORIES ---
+class CategoryBase(BaseModel):
+    name: str
+    description: Optional[str] = None
+
+class CategoryCreate(CategoryBase):
+    pass
+
+class CategoryResponse(CategoryBase):
+    id: int
+    model_config = ConfigDict(from_attributes=True)
 
 # --- USERS ---
 class UserBase(BaseModel):
     email: str
+    name: Optional[str] = None
     role: str = "employee"
+    department_id: Optional[int] = None
 
 class UserCreate(UserBase):
     password: str
+
+class UserResponse(UserBase):
+    id: int
+    department: Optional[DepartmentResponse] = None
+    model_config = ConfigDict(from_attributes=True)
 
 class Token(BaseModel):
     access_token: str
@@ -17,19 +47,18 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     email: Optional[str] = None
 
-
-class UserResponse(UserBase):
-    id: int
-    model_config = ConfigDict(from_attributes=True)
-
 # --- ASSETS ---
-class AssetCreate(BaseModel):
+class AssetBase(BaseModel):
     name: str
+    category_id: Optional[int] = None
 
-class AssetResponse(BaseModel):
+class AssetCreate(AssetBase):
+    pass
+
+class AssetResponse(AssetBase):
     id: int
-    name: str
     status: str
+    category: Optional[CategoryResponse] = None
     model_config = ConfigDict(from_attributes=True)
 
 # --- BOOKINGS & ALLOCATIONS ---

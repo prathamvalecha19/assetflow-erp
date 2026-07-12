@@ -24,6 +24,10 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
+@router.get("/users", response_model=List[schemas.UserResponse])
+def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_users(db, skip=skip, limit=limit)
+
 @router.post("/users", response_model=schemas.UserResponse)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email=user.email)
@@ -31,6 +35,22 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email already registered")
     hashed_password = auth.get_password_hash(user.password)
     return crud.create_user(db=db, user=user, hashed_password=hashed_password)
+
+@router.get("/departments", response_model=List[schemas.DepartmentResponse])
+def read_departments(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_departments(db, skip=skip, limit=limit)
+
+@router.post("/departments", response_model=schemas.DepartmentResponse)
+def create_department(department: schemas.DepartmentCreate, db: Session = Depends(get_db)):
+    return crud.create_department(db=db, department=department)
+
+@router.get("/categories", response_model=List[schemas.CategoryResponse])
+def read_categories(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_categories(db, skip=skip, limit=limit)
+
+@router.post("/categories", response_model=schemas.CategoryResponse)
+def create_category(category: schemas.CategoryCreate, db: Session = Depends(get_db)):
+    return crud.create_category(db=db, category=category)
 
 @router.get("/assets", response_model=List[schemas.AssetResponse])
 def read_assets(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):

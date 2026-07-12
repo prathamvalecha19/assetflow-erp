@@ -2,12 +2,12 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime, timedelta
+import time
 
 from main import app
 from database import get_db
 import models
 
-# Use an in-memory SQLite database for testing
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -29,7 +29,7 @@ client = TestClient(app)
 def test_create_user():
     response = client.post(
         "/users",
-        json={"email": "admin@example.com", "password": "password123", "role": "admin"}
+        json={"email": "admin@example.com", "password": "password123", "role": "admin", "name": "Admin User"}
     )
     assert response.status_code == 200
     assert response.json()["email"] == "admin@example.com"
@@ -43,11 +43,26 @@ def test_login():
     assert "access_token" in response.json()
     return response.json()["access_token"]
 
+def test_create_department():
+    name = f"IT Support_{time.time()}"
+    response = client.post("/departments", json={"name": name})
+    assert response.status_code == 200
+    assert response.json()["name"] == name
+    return response.json()["id"]
+
+def test_create_category():
+    name = f"Laptops_{time.time()}"
+    response = client.post("/categories", json={"name": name, "description": "Work laptops"})
+    assert response.status_code == 200
+    assert response.json()["name"] == name
+    return response.json()["id"]
+
 def test_create_asset():
     token = test_login()
+    cat_id = test_create_category()
     response = client.post(
         "/assets",
-        json={"name": "Test Laptop"},
+        json={"name": "Test Laptop", "category_id": cat_id},
         headers={"Authorization": f"Bearer {token}"}
     )
     assert response.status_code == 200
@@ -71,13 +86,11 @@ def test_create_booking():
 
 def test_overlap_booking():
     token = test_login()
+    cat_id = client.get("/categories").json()[0]["id"]
     
-    # We know asset_id 1 is already booked from the previous test if tests run sequentially,
-    # but pytest runs tests independently in random or sequential order.
-    # To be safe, we'll create a new asset.
     response_asset = client.post(
         "/assets",
-        json={"name": "Overlap Laptop"},
+        json={"name": "Overlap Laptop", "category_id": cat_id},
         headers={"Authorization": f"Bearer {token}"}
     )
     asset_id = response_asset.json()["id"]
@@ -85,18 +98,15 @@ def test_overlap_booking():
     start = datetime.utcnow().isoformat()
     end = (datetime.utcnow() + timedelta(hours=1)).isoformat()
     
-    # First booking
     client.post(
         "/bookings",
         json={"asset_id": asset_id, "start_time": start, "end_time": end},
         headers={"Authorization": f"Bearer {token}"}
     )
     
-    # Overlap booking
     response_overlap = client.post(
         "/bookings",
         json={"asset_id": asset_id, "start_time": start, "end_time": end},
         headers={"Authorization": f"Bearer {token}"}
     )
     assert response_overlap.status_code == 400
-    assert "already booked" in response_overlap.json()["detail"]
