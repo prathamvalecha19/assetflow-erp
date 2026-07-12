@@ -12,6 +12,7 @@ import Assets from './pages/Assets';
 import Bookings from './pages/Bookings';
 import Maintenance from './pages/Maintenance';
 import Admin from './pages/Admin';
+import DatabaseAdmin from './pages/DatabaseAdmin';
 
 function AppLayout({ children }) {
   return (
@@ -33,6 +34,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/db-admin" element={<DatabaseAdmin />} />
 
         <Route path="/" element={<ProtectedRoute><AppLayout><Navigate to="/dashboard" replace /></AppLayout></ProtectedRoute>} />
         <Route path="/dashboard" element={<ProtectedRoute><AppLayout><Dashboard /></AppLayout></ProtectedRoute>} />
