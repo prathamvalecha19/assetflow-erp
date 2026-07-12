@@ -47,6 +47,10 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     email: Optional[str] = None
 
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
 # --- ASSETS ---
 class AssetBase(BaseModel):
     name: str
@@ -70,4 +74,29 @@ class BookingCreate(BaseModel):
 class BookingResponse(BookingCreate):
     id: int
     user_id: int
+    status: str = "Pending"
+    resource: str = "" # helper for asset name in frontend API
+    employee: str = "" # helper for user email in frontend API
+    model_config = ConfigDict(from_attributes=True)
+
+# --- MAINTENANCE ---
+class MaintenanceCreate(BaseModel):
+    asset_id: int
+    issue: str
+    priority: str = "Medium"
+    technician: str = "-"
+
+class MaintenanceUpdate(BaseModel):
+    status: Optional[str] = None
+    technician: Optional[str] = None
+
+class MaintenanceResponse(BaseModel):
+    id: int
+    asset_id: int
+    asset: str = "" # helper for asset name
+    issue: str
+    priority: str
+    status: str
+    technician: str
+    created_at: datetime
     model_config = ConfigDict(from_attributes=True)

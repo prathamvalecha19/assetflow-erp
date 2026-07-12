@@ -11,18 +11,23 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError('');
 
-    setTimeout(() => {
-      if (login(email, password)) {
+    try {
+      const success = await login(email, password);
+      if (success) {
         navigate('/dashboard');
       } else {
         setError('Invalid credentials.');
         setIsLoading(false);
       }
-    }, 800);
+    } catch (err) {
+      setError('An error occurred during authentication.');
+      setIsLoading(false);
+    }
   };
 
   return (
