@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../services/auth';
-import { FiMail, FiLock } from 'react-icons/fi';
+import { FiMail, FiLock, FiBox } from 'react-icons/fi';
 import './Login.css';
 
 const Login = () => {
@@ -9,81 +9,111 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const cardRef = useRef(null);
 
   const handleLogin = (e) => {
     e.preventDefault();
     if (login(email, password)) {
       navigate('/dashboard');
     } else {
-      setError('Invalid email or password. Any non-empty input works for this demo.');
+      setError('Invalid email or password. Any input works for demo.');
+    }
+  };
+
+  const handleMouseMove = (e) => {
+    const card = cardRef.current;
+    if (!card) return;
+
+    // Get mouse position relative to the card center
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    // Calculate rotation (-10 to 10 degrees max)
+    const rotateX = ((y - centerY) / centerY) * -10;
+    const rotateY = ((x - centerX) / centerX) * 10;
+
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  };
+
+  const handleMouseLeave = () => {
+    const card = cardRef.current;
+    if (card) {
+      // Reset position smoothly
+      card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
     }
   };
 
   return (
-    <div className="login-container">
-      <div className="login-left">
-        <div className="brand-logo">AssetFlow</div>
-        <div className="welcome-text">
-          <h1>Manage your enterprise assets effectively.</h1>
-          <p>Streamline asset tracking, booking, and maintenance all in one secure platform.</p>
-        </div>
-        <div className="illustration-wrapper">
-          <div className="abstract-illustration"></div>
-        </div>
-      </div>
-      
-      <div className="login-right">
-        <div className="login-card">
-          <h2>Welcome Back</h2>
-          <p className="login-subtitle">Please enter your credentials to access your account.</p>
-          
-          {error && <div className="error-alert">{error}</div>}
-          
-          <form onSubmit={handleLogin}>
-            <div className="input-group">
-              <label>Email Address</label>
-              <div className="input-icon-wrapper">
-                <FiMail className="input-icon" />
-                <input 
-                  type="email" 
-                  placeholder="admin@assetflow.com" 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required 
-                />
-              </div>
+    <div className="login-3d-container">
+      {/* Immersive Animated Background Elements */}
+      <div className="shape shape-1"></div>
+      <div className="shape shape-2"></div>
+      <div className="shape shape-3"></div>
+      <div className="shape shape-4"></div>
+      <div className="particles-layer"></div>
+
+      <div className="login-content">
+        <div
+          className="login-glass-card"
+          ref={cardRef}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+        >
+          <div className="login-header">
+            <div className="brand-icon-3d">
+              <FiBox className="icon-pulse" />
             </div>
-            
-            <div className="input-group">
-              <label>Password</label>
-              <div className="input-icon-wrapper">
-                <FiLock className="input-icon" />
-                <input 
-                  type="password" 
-                  placeholder="••••••••" 
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required 
-                />
-              </div>
+            <h2>AssetFlow</h2>
+            <p>Welcome to the Future of ERP</p>
+          </div>
+
+          {error && <div className="error-alert-3d">{error}</div>}
+
+          <form onSubmit={handleLogin} className="login-form-3d">
+            <div className="input-group-3d">
+              <FiMail className="input-icon-3d" />
+              <input
+                type="email"
+                placeholder="Email Address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </div>
-            
-            <div className="login-options">
-              <label className="remember-me">
+
+            <div className="input-group-3d">
+              <FiLock className="input-icon-3d" />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="options-3d">
+              <label className="checkbox-3d">
                 <input type="checkbox" />
-                <span>Remember Me</span>
+                <span className="checkmark"></span>
+                Remember me
               </label>
-              <a href="#" className="forgot-password">Forgot Password?</a>
+              <a href="#" className="forgot-link-3d">Forgot Password?</a>
             </div>
-            
-            <button type="submit" className="btn btn-primary login-btn">
-              Login to Dashboard
+
+            <button type="submit" className="login-btn-3d">
+              <span>Secure Login</span>
+              <div className="btn-glow"></div>
             </button>
-            
-            <div className="signup-link">
-              Don't have an account? <a href="#">Sign up</a>
-            </div>
           </form>
+
+          <div className="signup-3d">
+            Don't have an account? <a href="#">Create one</a>
+          </div>
         </div>
       </div>
     </div>
