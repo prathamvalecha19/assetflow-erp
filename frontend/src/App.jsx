@@ -11,6 +11,7 @@ import Organization from './pages/Organization';
 import Assets from './pages/Assets';
 import Bookings from './pages/Bookings';
 import Maintenance from './pages/Maintenance';
+import Admin from './pages/Admin';
 
 function AppLayout({ children }) {
   return (
@@ -39,6 +40,7 @@ function App() {
         <Route path="/assets" element={<ProtectedRoute><AppLayout><Assets /></AppLayout></ProtectedRoute>} />
         <Route path="/bookings" element={<ProtectedRoute><AppLayout><Bookings /></AppLayout></ProtectedRoute>} />
         <Route path="/maintenance" element={<ProtectedRoute><AppLayout><Maintenance /></AppLayout></ProtectedRoute>} />
+        <Route path="/admin" element={<ProtectedRoute><AppLayout><Admin /></AppLayout></ProtectedRoute>} />
       </Routes>
     </Router>
   );

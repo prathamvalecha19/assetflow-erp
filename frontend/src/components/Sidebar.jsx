@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { FiGrid, FiUsers, FiBox, FiCalendar, FiTool, FiLogOut, FiMenu } from 'react-icons/fi';
+import { FiGrid, FiUsers, FiBox, FiCalendar, FiTool, FiLogOut, FiMenu, FiShield } from 'react-icons/fi';
 import { logout } from '../services/auth';
 import './Sidebar.css';
 
@@ -19,6 +19,7 @@ const Sidebar = () => {
     { path: '/assets', name: 'Assets', icon: <FiBox /> },
     { path: '/bookings', name: 'Bookings', icon: <FiCalendar /> },
     { path: '/maintenance', name: 'Maintenance', icon: <FiTool /> },
+    { path: '/admin', name: 'Admin Panel', icon: <FiShield /> },
   ];
 
   return (
@@ -33,8 +34,8 @@ const Sidebar = () => {
 
       <div className="sidebar-menu">
         {navItems.map((item) => (
-          <NavLink 
-            to={item.path} 
+          <NavLink
+            to={item.path}
             key={item.name}
             className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
             title={collapsed ? item.name : ''}
