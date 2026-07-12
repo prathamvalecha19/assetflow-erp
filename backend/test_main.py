@@ -33,6 +33,7 @@ def test_create_user():
     )
     assert response.status_code == 200
     assert response.json()["email"] == "admin@example.com"
+    return response.json()["id"]
 
 def test_login():
     response = client.post(
@@ -62,16 +63,28 @@ def test_create_asset():
     cat_id = test_create_category()
     response = client.post(
         "/api/assets",
-        json={"name": "Test Laptop", "category_id": cat_id},
+        json={"name": "Test Laptop", "category_id": cat_id, "is_shared": False},
         headers={"Authorization": f"Bearer {token}"}
     )
     assert response.status_code == 200
     assert response.json()["name"] == "Test Laptop"
+    assert "AF-" in response.json()["asset_tag"]
+    return response.json()["id"]
+
+def test_create_shared_asset():
+    token = test_login()
+    cat_id = client.get("/api/categories").json()[0]["id"]
+    response = client.post(
+        "/api/assets",
+        json={"name": "Shared Room", "category_id": cat_id, "is_shared": True},
+        headers={"Authorization": f"Bearer {token}"}
+    )
+    assert response.status_code == 200
     return response.json()["id"]
 
 def test_create_booking():
     token = test_login()
-    asset_id = test_create_asset()
+    asset_id = test_create_shared_asset()
     
     start = datetime.utcnow().isoformat()
     end = (datetime.utcnow() + timedelta(hours=1)).isoformat()
@@ -86,14 +99,7 @@ def test_create_booking():
 
 def test_overlap_booking():
     token = test_login()
-    cat_id = client.get("/api/categories").json()[0]["id"]
-    
-    response_asset = client.post(
-        "/api/assets",
-        json={"name": "Overlap Laptop", "category_id": cat_id},
-        headers={"Authorization": f"Bearer {token}"}
-    )
-    asset_id = response_asset.json()["id"]
+    asset_id = test_create_shared_asset()
     
     start = datetime.utcnow().isoformat()
     end = (datetime.utcnow() + timedelta(hours=1)).isoformat()
@@ -110,3 +116,39 @@ def test_overlap_booking():
         headers={"Authorization": f"Bearer {token}"}
     )
     assert response_overlap.status_code == 400
+
+def test_create_allocation():
+    token = test_login()
+    asset_id = test_create_asset() # not shared
+    user_id = client.get("/api/users").json()[0]["id"]
+    
+    response = client.post(
+        "/api/allocations",
+        json={"asset_id": asset_id, "user_id": user_id},
+        headers={"Authorization": f"Bearer {token}"}
+    )
+    assert response.status_code == 200
+    assert response.json()["status"] == "Active"
+    
+    # Check asset status updated
+    assets = client.get("/api/assets").json()
+    allocated_asset = next(a for a in assets if a["id"] == asset_id)
+    assert allocated_asset["status"] == "Allocated"
+    
+    return response.json()["id"], asset_id
+
+def test_return_allocation():
+    token = test_login()
+    alloc_id, asset_id = test_create_allocation()
+    
+    response = client.patch(
+        f"/api/allocations/{alloc_id}/return",
+        headers={"Authorization": f"Bearer {token}"}
+    )
+    assert response.status_code == 200
+    assert response.json()["status"] == "Returned"
+    
+    # Check asset status updated back to Available
+    assets = client.get("/api/assets").json()
+    returned_asset = next(a for a in assets if a["id"] == asset_id)
+    assert returned_asset["status"] == "Available"

@@ -55,14 +55,41 @@ class UserLogin(BaseModel):
 class AssetBase(BaseModel):
     name: str
     category_id: Optional[int] = None
+    serial_number: Optional[str] = None
+    acquisition_date: Optional[datetime] = None
+    acquisition_cost: Optional[float] = None
+    condition: Optional[str] = None
+    location: Optional[str] = None
+    is_shared: bool = False
 
 class AssetCreate(AssetBase):
     pass
 
 class AssetResponse(AssetBase):
     id: int
+    asset_tag: str
     status: str
     category: Optional[CategoryResponse] = None
+    model_config = ConfigDict(from_attributes=True)
+
+# --- ALLOCATIONS ---
+class AllocationCreate(BaseModel):
+    asset_id: int
+    user_id: int
+    expected_return_date: Optional[datetime] = None
+
+class AllocationUpdate(BaseModel):
+    status: Optional[str] = None
+    returned_date: Optional[datetime] = None
+
+class AllocationResponse(BaseModel):
+    id: int
+    asset_id: int
+    user_id: int
+    assigned_date: datetime
+    expected_return_date: Optional[datetime] = None
+    returned_date: Optional[datetime] = None
+    status: str
     model_config = ConfigDict(from_attributes=True)
 
 # --- BOOKINGS & ALLOCATIONS ---
@@ -74,7 +101,7 @@ class BookingCreate(BaseModel):
 class BookingResponse(BookingCreate):
     id: int
     user_id: int
-    status: str = "Pending"
+    status: str = "Upcoming"
     resource: str = "" # helper for asset name in frontend API
     employee: str = "" # helper for user email in frontend API
     model_config = ConfigDict(from_attributes=True)

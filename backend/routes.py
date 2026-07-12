@@ -76,9 +76,37 @@ def create_asset(
     db: Session = Depends(get_db), 
     current_user: schemas.UserResponse = Depends(auth.get_current_user)
 ):
-    if current_user.role != "admin":
+    if current_user.role != "admin" and current_user.role != "asset_manager":
         raise HTTPException(status_code=403, detail="Not authorized")
     return crud.create_asset(db=db, asset=asset)
+
+@router.get("/allocations", response_model=List[schemas.AllocationResponse])
+def read_allocations(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_allocations(db, skip=skip, limit=limit)
+
+@router.post("/allocations", response_model=schemas.AllocationResponse)
+def create_allocation(
+    allocation: schemas.AllocationCreate,
+    db: Session = Depends(get_db),
+    current_user: schemas.UserResponse = Depends(auth.get_current_user)
+):
+    if current_user.role not in ["admin", "asset_manager", "department_head"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    db_allocation = crud.allocate_asset(db, allocation)
+    if not db_allocation:
+        raise HTTPException(status_code=400, detail="Asset is not available for allocation")
+    return db_allocation
+
+@router.patch("/allocations/{id}/return", response_model=schemas.AllocationResponse)
+def return_allocation(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: schemas.UserResponse = Depends(auth.get_current_user)
+):
+    db_allocation = crud.return_asset(db, id)
+    if not db_allocation:
+        raise HTTPException(status_code=404, detail="Allocation not found")
+    return db_allocation
 
 @router.get("/bookings", response_model=List[schemas.BookingResponse])
 def read_bookings(db: Session = Depends(get_db)):
@@ -111,6 +139,9 @@ def create_booking(
         raise HTTPException(status_code=404, detail="Asset not found")
         
     b = crud.create_booking(db, booking, user_id=current_user.id)
+    if not b:
+        raise HTTPException(status_code=400, detail="Asset is not a shared/bookable resource")
+        
     return schemas.BookingResponse(
         id=b.id,
         asset_id=b.asset_id,
@@ -164,6 +195,9 @@ def update_maintenance(
     db: Session = Depends(get_db),
     current_user: schemas.UserResponse = Depends(auth.get_current_user)
 ):
+    if current_user.role not in ["admin", "asset_manager"]:
+        raise HTTPException(status_code=403, detail="Not authorized to update maintenance status")
+        
     m = crud.update_maintenance(db, id, updates)
     if not m:
         raise HTTPException(status_code=404, detail="Maintenance request not found")
