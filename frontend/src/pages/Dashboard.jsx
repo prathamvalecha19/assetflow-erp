@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Card from '../components/Card';
 import Table from '../components/Table';
 import { fetchAssets, fetchBookings } from '../services/api';
@@ -6,6 +7,7 @@ import { FiBox, FiCheckCircle, FiTool, FiCalendar, FiRefreshCw, FiClock, FiPlus 
 import './Dashboard.css';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [kpis, setKpis] = useState({
     assetsAvailable: { value: '-', trend: '+0%', status: 'success' },
     assetsAllocated: { value: '-', trend: '+0%', status: 'warning' },
@@ -14,21 +16,21 @@ const Dashboard = () => {
     pendingTransfers: { value: '-', trend: '-0%', status: 'warning' },
     upcomingReturns: { value: '-', trend: '+0%', status: 'success' }
   });
-  
+
   const [recentActivity, setRecentActivity] = useState([]);
 
   useEffect(() => {
     const loadDashboard = async () => {
       try {
         const [asts, bkgs] = await Promise.all([fetchAssets(), fetchBookings()]);
-        
+
         let available = 0, allocated = 0, maint = 0;
         asts.forEach(a => {
           if (a.status.toLowerCase() === 'available') available++;
           if (a.status.toLowerCase() === 'allocated') allocated++;
           if (a.status.toLowerCase() === 'maintenance') maint++;
         });
-        
+
         setKpis({
           assetsAvailable: { value: available, trend: '+5%', status: 'success' },
           assetsAllocated: { value: allocated, trend: '+2%', status: 'warning' },
@@ -55,11 +57,13 @@ const Dashboard = () => {
     { header: 'Item', accessor: 'item' },
     { header: 'User', accessor: 'user' },
     { header: 'Time', accessor: 'time' },
-    { header: 'Status', render: (row) => (
-      <span className={`badge badge-${row.status === 'completed' ? 'success' : 'warning'}`}>
-        {row.status}
-      </span>
-    )}
+    {
+      header: 'Status', render: (row) => (
+        <span className={`badge badge-${row.status === 'completed' ? 'success' : 'warning'}`}>
+          {row.status}
+        </span>
+      )
+    }
   ];
 
   return (
@@ -67,8 +71,8 @@ const Dashboard = () => {
       <div className="page-header flex-between">
         <h1 className="page-title">Dashboard Overview</h1>
         <div className="quick-actions">
-          <button className="btn btn-primary"><FiPlus /> Register Asset</button>
-          <button className="btn btn-outline"><FiCalendar /> Book Resource</button>
+          <button className="btn btn-primary" onClick={() => navigate('/assets')}><FiPlus /> Register Asset</button>
+          <button className="btn btn-outline" onClick={() => navigate('/bookings')}><FiCalendar /> Book Resource</button>
         </div>
       </div>
 
