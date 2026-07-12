@@ -49,10 +49,15 @@ def get_assets(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Asset).offset(skip).limit(limit).all()
 
 def create_asset(db: Session, asset: schemas.AssetCreate):
-    # Generate asset_tag like AF-0001
-    last_asset = db.query(models.Asset).order_by(models.Asset.id.desc()).first()
-    new_id = (last_asset.id + 1) if last_asset else 1
-    asset_tag = f"AF-{new_id:04d}"
+    # Generate asset_tag like AF-0001 (ensure no duplicates)
+    import sqlalchemy
+    max_id_query = db.query(sqlalchemy.func.max(models.Asset.id)).scalar()
+    new_id = (max_id_query + 1) if max_id_query else 1
+    while True:
+        asset_tag = f"AF-{new_id:04d}"
+        if not db.query(models.Asset).filter(models.Asset.asset_tag == asset_tag).first():
+            break
+        new_id += 1
 
     db_asset = models.Asset(
         name=asset.name, 
@@ -73,6 +78,17 @@ def create_asset(db: Session, asset: schemas.AssetCreate):
 
 def get_asset(db: Session, asset_id: int):
     return db.query(models.Asset).filter(models.Asset.id == asset_id).first()
+
+def update_asset(db: Session, asset_id: int, updates: schemas.AssetUpdate):
+    db_asset = get_asset(db, asset_id)
+    if not db_asset:
+        return None
+    update_data = updates.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(db_asset, key, value)
+    db.commit()
+    db.refresh(db_asset)
+    return db_asset
 
 def update_asset_status(db: Session, asset_id: int, status: str):
     db_asset = get_asset(db, asset_id)

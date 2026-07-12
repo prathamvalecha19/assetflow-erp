@@ -1,6 +1,6 @@
 const BASE_URL = 'http://localhost:8000/api';
 
-// Helper to get auth headers — uses the real JWT token stored on login
+// Helper to get auth headers â€” uses the real JWT token stored on login
 const getHeaders = () => {
   const headers = {
     'Content-Type': 'application/json',
@@ -257,13 +257,49 @@ export const fetchAssets = getAssets;
 export const fetchBookings = getBookings;
 
 export const fetchDepartments = async () => {
+  try {
+    const res = await fetch(`${BASE_URL}/departments`, { headers: getHeaders() });
+    if (res.ok) {
+      const data = await res.json();
+      return data;
+    }
+  } catch (e) {
+    console.warn("Backend API not reachable. Using fallback departments.", e);
+  }
   return organizationData.departments;
 };
+
 export const fetchUsers = async () => {
+  try {
+    const res = await fetch(`${BASE_URL}/users`, { headers: getHeaders() });
+    if (res.ok) {
+      const data = await res.json();
+      return data.map(u => ({
+        id: `EMP-${u.id.toString().padStart(3, '0')}`,
+        name: u.name || u.email.split('@')[0],
+        email: u.email,
+        department: u.department || 'Unassigned',
+        role: u.role || 'Employee',
+        status: u.status || 'Active'
+      }));
+    }
+  } catch (e) {
+    console.warn("Backend API not reachable. Using fallback employees.", e);
+  }
   return organizationData.employees;
 };
+
 export const fetchCategories = async () => {
-  return ['Electronics', 'Furniture', 'Vehicles', 'IT Equipment', 'Laboratory'];
+  try {
+    const res = await fetch(`${BASE_URL}/categories`, { headers: getHeaders() });
+    if (res.ok) {
+      const data = await res.json();
+      return data.map(c => c.name);
+    }
+  } catch (e) {
+    console.warn("Backend API not reachable. Using fallback categories.", e);
+  }
+  return ['Electronics', 'Furniture', 'Facilities', 'Laptops'];
 };
 
 export const createAsset = async (asset) => {
@@ -275,10 +311,62 @@ export const createAsset = async (asset) => {
     });
     if (res.ok) {
       const newAsset = await res.json();
+      const locals = JSON.parse(localStorage.getItem('local_assets')) || [];
+      localStorage.setItem('local_assets', JSON.stringify([...locals, newAsset]));
       return { success: true, data: newAsset };
     }
   } catch (e) {
-    console.error("Local create fallback", e);
+    console.warn("Backend API not reachable. Performing mock local asset creation.", e);
+    const locals = JSON.parse(localStorage.getItem('local_assets')) || [];
+    const newId = locals.length ? Math.max(...locals.map(a => a.id || 0)) + 1 : 1;
+    const newLocalAsset = {
+      id: newId,
+      asset_tag: `AF-${newId.toString().padStart(4, '0')}`,
+      name: asset.name,
+      condition: asset.condition || 'New',
+      location: asset.location || 'HQ',
+      status: 'Available',
+      category: 'Uncategorized',
+      assignedTo: '-'
+    };
+    localStorage.setItem('local_assets', JSON.stringify([...locals, newLocalAsset]));
+    return { success: true, data: newLocalAsset };
+  }
+  return { success: false };
+};
+
+export const updateAsset = async (id, updates) => {
+  try {
+    let numericId = id;
+    if (typeof id === 'string') {
+      const match = id.match(/\d+/);
+      if (match) {
+        numericId = parseInt(match[0], 10);
+      }
+    }
+    const res = await fetch(`http://localhost:8000/api/assets/${numericId}`, {
+      method: 'PATCH',
+      headers: getHeaders(),
+      body: JSON.stringify(updates),
+    });
+    if (res.ok) {
+      const updatedAsset = await res.json();
+      const locals = JSON.parse(localStorage.getItem('local_assets')) || [];
+      const newLocals = locals.map(a => (a.id === numericId || a.asset_tag === id) ? { ...a, ...updatedAsset } : a);
+      localStorage.setItem('local_assets', JSON.stringify(newLocals));
+      return { success: true, data: updatedAsset };
+    }
+  } catch (e) {
+    console.warn("Backend API not reachable. Performing mock local asset update.", e);
+    const locals = JSON.parse(localStorage.getItem('local_assets')) || [];
+    const newLocals = locals.map(a => {
+      if (a.id === id || a.asset_tag === id || (typeof id === 'string' && a.asset_tag && a.asset_tag.toLowerCase() === id.toLowerCase())) {
+        return { ...a, ...updates };
+      }
+      return a;
+    });
+    localStorage.setItem('local_assets', JSON.stringify(newLocals));
+    return { success: true };
   }
   return { success: false };
 };

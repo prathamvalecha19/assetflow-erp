@@ -69,6 +69,17 @@ class AssetBase(BaseModel):
 class AssetCreate(AssetBase):
     pass
 
+class AssetUpdate(BaseModel):
+    name: Optional[str] = None
+    category_id: Optional[int] = None
+    serial_number: Optional[str] = None
+    acquisition_date: Optional[datetime] = None
+    acquisition_cost: Optional[float] = None
+    condition: Optional[str] = None
+    location: Optional[str] = None
+    is_shared: Optional[bool] = None
+    status: Optional[str] = None
+
 class AssetResponse(AssetBase):
     id: int
     asset_tag: str

@@ -12,7 +12,7 @@ export const login = async (email, password) => {
 
     if (response.ok) {
       const data = await response.json();
-      // Backend returns { access_token, token_type } — no user object
+      // Backend returns { access_token, token_type } â€” no user object
       localStorage.setItem('isAuthenticated', 'true');
       localStorage.setItem('token', data.access_token);
       // Decode user email from the JWT payload (middle part)
@@ -27,13 +27,13 @@ export const login = async (email, password) => {
       return true;
     }
 
-    // Backend returned 401 — wrong credentials, don't fall back
+    // Backend returned 401 â€” wrong credentials, don't fall back
     return false;
   } catch (error) {
     console.warn("Backend not reachable. Using offline fallback auth.", error);
   }
 
-  // Offline fallback — allow any email/password when backend is down
+  // Offline fallback â€” allow any email/password when backend is down
   if (email && password) {
     localStorage.setItem('isAuthenticated', 'true');
     localStorage.setItem('user', JSON.stringify({ name: email.split('@')[0], email }));

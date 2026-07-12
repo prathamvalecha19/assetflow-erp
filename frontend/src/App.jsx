@@ -11,8 +11,6 @@ import Organization from './pages/Organization';
 import Assets from './pages/Assets';
 import Bookings from './pages/Bookings';
 import Maintenance from './pages/Maintenance';
-import Admin from './pages/Admin';
-import DatabaseAdmin from './pages/DatabaseAdmin';
 
 function AppLayout({ children }) {
   return (
@@ -34,7 +32,6 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/db-admin" element={<DatabaseAdmin />} />
 
         <Route path="/" element={<ProtectedRoute><AppLayout><Navigate to="/dashboard" replace /></AppLayout></ProtectedRoute>} />
         <Route path="/dashboard" element={<ProtectedRoute><AppLayout><Dashboard /></AppLayout></ProtectedRoute>} />
@@ -42,7 +39,6 @@ function App() {
         <Route path="/assets" element={<ProtectedRoute><AppLayout><Assets /></AppLayout></ProtectedRoute>} />
         <Route path="/bookings" element={<ProtectedRoute><AppLayout><Bookings /></AppLayout></ProtectedRoute>} />
         <Route path="/maintenance" element={<ProtectedRoute><AppLayout><Maintenance /></AppLayout></ProtectedRoute>} />
-        <Route path="/admin" element={<ProtectedRoute><AppLayout><Admin /></AppLayout></ProtectedRoute>} />
       </Routes>
     </Router>
   );

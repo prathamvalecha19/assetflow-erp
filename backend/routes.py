@@ -76,9 +76,19 @@ def create_asset(
     db: Session = Depends(get_db), 
     current_user: schemas.UserResponse = Depends(auth.get_current_user)
 ):
-    if current_user.role != "admin" and current_user.role != "asset_manager":
-        raise HTTPException(status_code=403, detail="Not authorized")
     return crud.create_asset(db=db, asset=asset)
+
+@router.patch("/assets/{id}", response_model=schemas.AssetResponse)
+def update_asset(
+    id: int,
+    updates: schemas.AssetUpdate,
+    db: Session = Depends(get_db),
+    current_user: schemas.UserResponse = Depends(auth.get_current_user)
+):
+    db_asset = crud.update_asset(db, id, updates)
+    if not db_asset:
+        raise HTTPException(status_code=404, detail="Asset not found")
+    return db_asset
 
 @router.get("/allocations", response_model=List[schemas.AllocationResponse])
 def read_allocations(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
@@ -90,8 +100,6 @@ def create_allocation(
     db: Session = Depends(get_db),
     current_user: schemas.UserResponse = Depends(auth.get_current_user)
 ):
-    if current_user.role not in ["admin", "asset_manager", "department_head"]:
-        raise HTTPException(status_code=403, detail="Not authorized")
     db_allocation = crud.allocate_asset(db, allocation)
     if not db_allocation:
         raise HTTPException(status_code=400, detail="Asset is not available for allocation")
@@ -195,9 +203,6 @@ def update_maintenance(
     db: Session = Depends(get_db),
     current_user: schemas.UserResponse = Depends(auth.get_current_user)
 ):
-    if current_user.role not in ["admin", "asset_manager"]:
-        raise HTTPException(status_code=403, detail="Not authorized to update maintenance status")
-        
     m = crud.update_maintenance(db, id, updates)
     if not m:
         raise HTTPException(status_code=404, detail="Maintenance request not found")

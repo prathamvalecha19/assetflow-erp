@@ -111,3 +111,61 @@
     display: none;
   }
 }
+
+/* Modal styles for Settings */
+.navbar-settings-modal.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(15, 23, 42, 0.6);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-settings-modal .modal-content {
+  background: white;
+  width: 100%;
+  max-width: 450px;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  color: #0f172a;
+}
+
+.navbar-settings-modal .modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-settings-modal .modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.navbar-settings-modal .close-btn {
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: var(--text-light);
+  line-height: 1;
+}
+
+.navbar-settings-modal .modal-body {
+  padding: 24px;
+}
+
+.navbar-settings-modal .modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import './Table.css';
 import { FiSearch, FiMoreVertical } from 'react-icons/fi';
 
-const Table = ({ columns, data, search, pagination, actions }) => {
+const Table = ({ columns, data, search, pagination, actions, onRowClick }) => {
   return (
     <div className="table-container">
       {search && (
@@ -27,7 +27,7 @@ const Table = ({ columns, data, search, pagination, actions }) => {
           <tbody>
             {data.length > 0 ? (
               data.map((row, rowIndex) => (
-                <tr key={rowIndex}>
+                <tr key={rowIndex} onClick={() => onRowClick && onRowClick(row)} style={{ cursor: onRowClick ? 'pointer' : 'default' }}>
                   {columns.map((col, colIndex) => (
                     <td key={colIndex}>
                       {col.render ? col.render(row) : row[col.accessor]}
@@ -35,7 +35,7 @@ const Table = ({ columns, data, search, pagination, actions }) => {
                   ))}
                   {actions && (
                     <td>
-                      <button className="action-btn">
+                      <button className="action-btn" onClick={(e) => { e.stopPropagation(); onRowClick && onRowClick(row); }}>
                         <FiMoreVertical />
                       </button>
                     </td>

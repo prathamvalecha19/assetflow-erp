@@ -22,7 +22,13 @@ def override_get_db():
     finally:
         db.close()
 
-app.dependency_overrides[get_db] = override_get_db
+import pytest
+
+@pytest.fixture(autouse=True)
+def run_around_tests():
+    app.dependency_overrides[get_db] = override_get_db
+    yield
+    app.dependency_overrides.clear()
 
 client = TestClient(app)
 

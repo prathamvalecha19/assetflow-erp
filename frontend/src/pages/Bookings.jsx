@@ -234,7 +234,7 @@ const Bookings = () => {
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
               <h2>Book a Resource</h2>
-              <button className="close-btn" onClick={() => setShowModal(false)}>×</button>
+              <button className="close-btn" onClick={() => setShowModal(false)}>Ã—</button>
             </div>
             
             <form onSubmit={handleBook}>

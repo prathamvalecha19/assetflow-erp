@@ -376,7 +376,7 @@
 }
 
 .checkbox-wrap input:checked~.chk-box::after {
-  content: '✓';
+  content: 'âœ“';
   color: white;
   font-size: 12px;
   font-weight: bold;
