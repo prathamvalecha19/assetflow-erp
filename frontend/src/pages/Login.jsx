@@ -50,12 +50,12 @@ const Login = () => {
             <p>A unified platform to track, allocate, and maintain your resources with complete transparency.</p>
           </div>
 
-          <div className="lottie-animation-wrapper fade-in-delay-1" style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
+          <div className="lottie-animation-wrapper fade-in-delay-1" style={{ marginTop: '30px', display: 'flex', justifyContent: 'center', width: '100%' }}>
             <DotLottieReact
               src="https://lottie.host/07d38957-a2d1-41c1-b042-55e186e853ad/mYbzSD8O6U.lottie"
               loop
               autoplay
-              style={{ width: '100%', maxWidth: '350px' }}
+              style={{ width: '100%', maxWidth: '650px', transform: 'scale(1.2)' }}
             />
           </div>
         </div>
