@@ -66,6 +66,10 @@ def create_asset(
         raise HTTPException(status_code=403, detail="Not authorized")
     return crud.create_asset(db=db, asset=asset)
 
+@router.get("/bookings", response_model=List[schemas.BookingResponse])
+def read_bookings(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_bookings(db, skip=skip, limit=limit)
+
 @router.post("/bookings", response_model=schemas.BookingResponse)
 def create_booking(
     booking: schemas.BookingCreate, 

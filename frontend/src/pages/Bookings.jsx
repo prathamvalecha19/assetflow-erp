@@ -1,10 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Table from '../components/Table';
-import { bookingsData } from '../services/api';
+import { fetchBookings, fetchAssets, fetchUsers } from '../services/api';
 import { FiCalendar, FiPlus } from 'react-icons/fi';
 import './Bookings.css';
 
 const Bookings = () => {
+  const [bookings, setBookings] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [bkgs, asts, usrs] = await Promise.all([
+          fetchBookings(),
+          fetchAssets(),
+          fetchUsers()
+        ]);
+        
+        const assetMap = {};
+        asts.forEach(a => assetMap[a.id] = a.name);
+        
+        const userMap = {};
+        usrs.forEach(u => userMap[u.id] = u.name || u.email);
+
+        const formatted = bkgs.map(b => ({
+          id: `BKG-${b.id.toString().padStart(3, '0')}`,
+          resource: assetMap[b.asset_id] || `Asset #${b.asset_id}`,
+          employee: userMap[b.user_id] || `User #${b.user_id}`,
+          startTime: new Date(b.start_time).toLocaleString(),
+          endTime: new Date(b.end_time).toLocaleString(),
+          status: 'Approved'
+        }));
+        
+        setBookings(formatted);
+      } catch (err) {
+        console.error("Failed to load bookings", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadData();
+  }, []);
+
   const columns = [
     { header: 'Resource', accessor: 'resource' },
     { header: 'Employee', accessor: 'employee' },
@@ -37,7 +74,11 @@ const Bookings = () => {
           <div className="section-header">
             <h2>Recent Bookings</h2>
           </div>
-          <Table columns={columns} data={bookingsData} search={true} pagination={true} actions={true} />
+          {isLoading ? (
+            <p>Loading bookings...</p>
+          ) : (
+            <Table columns={columns} data={bookings} search={true} pagination={true} actions={true} />
+          )}
         </div>
       </div>
     </div>

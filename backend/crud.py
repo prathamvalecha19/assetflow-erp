@@ -67,6 +67,9 @@ def update_asset_status(db: Session, asset_id: int, status: str):
     return db_asset
 
 # -- Bookings --
+def get_bookings(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Booking).offset(skip).limit(limit).all()
+
 def check_booking_overlap(db: Session, asset_id: int, start_time: datetime, end_time: datetime):
     return db.query(models.Booking).filter(
         models.Booking.asset_id == asset_id,

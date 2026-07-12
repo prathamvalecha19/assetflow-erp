@@ -1,18 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Table from '../components/Table';
-import { assetsData } from '../services/api';
+import { fetchAssets } from '../services/api';
 import { FiPlus, FiFilter } from 'react-icons/fi';
 import './Assets.css';
 
 const Assets = () => {
   const [selectedAsset, setSelectedAsset] = useState(null);
+  const [assetsData, setAssetsData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadAssets = async () => {
+      try {
+        const data = await fetchAssets();
+        const formatted = data.map(asset => ({
+          id: `AST-${asset.id.toString().padStart(3, '0')}`,
+          name: asset.name,
+          category: asset.category?.name || 'Uncategorized',
+          status: asset.status.charAt(0).toUpperCase() + asset.status.slice(1),
+          assignedTo: '-',
+          location: '-',
+          condition: 'Good'
+        }));
+        setAssetsData(formatted);
+      } catch (err) {
+        console.error("Failed to load assets", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadAssets();
+  }, []);
 
   const getStatusBadge = (status) => {
-    switch(status) {
-      case 'Available': return 'success';
-      case 'Allocated': return 'primary';
-      case 'Reserved': return 'warning';
-      case 'Maintenance': return 'danger';
+    switch(status.toLowerCase()) {
+      case 'available': return 'success';
+      case 'allocated': return 'primary';
+      case 'reserved': return 'warning';
+      case 'maintenance': return 'danger';
       default: return 'neutral';
     }
   };
@@ -46,9 +71,12 @@ const Assets = () => {
          <select className="filter-select"><option>All Locations</option></select>
       </div>
 
-      {/* Wrapping table in a div to catch clicks on rows ideally, but for demo UI simplicity standardizing */}
-      <div onClick={() => setSelectedAsset(assetsData[0])}>
-        <Table columns={columns} data={assetsData} search={true} pagination={true} actions={true} />
+      <div onClick={() => assetsData.length > 0 && setSelectedAsset(assetsData[0])}>
+        {isLoading ? (
+          <p>Loading assets...</p>
+        ) : (
+          <Table columns={columns} data={assetsData} search={true} pagination={true} actions={true} />
+        )}
       </div>
 
       {selectedAsset && (

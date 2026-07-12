@@ -1,12 +1,54 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from '../components/Card';
 import Table from '../components/Table';
-import { dashboardData } from '../services/api';
+import { fetchAssets, fetchBookings } from '../services/api';
 import { FiBox, FiCheckCircle, FiTool, FiCalendar, FiRefreshCw, FiClock, FiPlus } from 'react-icons/fi';
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const { kpis, recentActivity } = dashboardData;
+  const [kpis, setKpis] = useState({
+    assetsAvailable: { value: '-', trend: '+0%', status: 'success' },
+    assetsAllocated: { value: '-', trend: '+0%', status: 'warning' },
+    maintenanceToday: { value: '-', trend: '-0%', status: 'danger' },
+    activeBookings: { value: '-', trend: '+0%', status: 'primary' },
+    pendingTransfers: { value: '-', trend: '-0%', status: 'warning' },
+    upcomingReturns: { value: '-', trend: '+0%', status: 'success' }
+  });
+  
+  const [recentActivity, setRecentActivity] = useState([]);
+
+  useEffect(() => {
+    const loadDashboard = async () => {
+      try {
+        const [asts, bkgs] = await Promise.all([fetchAssets(), fetchBookings()]);
+        
+        let available = 0, allocated = 0, maint = 0;
+        asts.forEach(a => {
+          if (a.status.toLowerCase() === 'available') available++;
+          if (a.status.toLowerCase() === 'allocated') allocated++;
+          if (a.status.toLowerCase() === 'maintenance') maint++;
+        });
+        
+        setKpis({
+          assetsAvailable: { value: available, trend: '+5%', status: 'success' },
+          assetsAllocated: { value: allocated, trend: '+2%', status: 'warning' },
+          maintenanceToday: { value: maint, trend: '-3%', status: 'danger' },
+          activeBookings: { value: bkgs.length, trend: '+12%', status: 'primary' },
+          pendingTransfers: { value: 0, trend: '-0%', status: 'warning' },
+          upcomingReturns: { value: 0, trend: '+0%', status: 'success' }
+        });
+
+        // Mock recent activity since backend doesn't store logs
+        setRecentActivity([
+          { id: 1, action: 'Dashboard Refreshed', item: 'System', user: 'Admin', time: 'Just now', status: 'completed' }
+        ]);
+
+      } catch (err) {
+        console.error("Failed to load dashboard data", err);
+      }
+    };
+    loadDashboard();
+  }, []);
 
   const columns = [
     { header: 'Action', accessor: 'action' },

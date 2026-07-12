@@ -11,18 +11,23 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError('');
 
-    setTimeout(() => {
-      if (login(email, password)) {
+    try {
+      const success = await login(email, password);
+      if (success) {
         navigate('/dashboard');
       } else {
-        setError('Invalid credentials.');
-        setIsLoading(false);
+        setError('Invalid credentials. Please try again.');
       }
-    }, 800);
+    } catch (err) {
+      setError('Connection failed.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
