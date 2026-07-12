@@ -1,13 +1,13 @@
 const BASE_URL = 'http://localhost:8000/api';
 
-// Helper to get auth headers
+// Helper to get auth headers — uses the real JWT token stored on login
 const getHeaders = () => {
   const headers = {
     'Content-Type': 'application/json',
   };
-  const user = JSON.parse(localStorage.getItem('user'));
-  if (user && user.email) {
-    headers['Authorization'] = `Bearer ${user.email}`;
+  const token = localStorage.getItem('token');
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
   }
   return headers;
 };
