@@ -68,7 +68,15 @@ const Login = () => {
             <div className="logo-box">AF</div>
           </div>
 
-          <div className="form-head">
+          <div className="form-head" style={{ textAlign: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '-10px' }}>
+              <DotLottieReact
+                src="https://lottie.host/167b5c5f-54e9-48eb-978e-b3c49b148419/boKjddndNp.lottie"
+                loop
+                autoplay
+                style={{ width: '120px', height: '120px' }}
+              />
+            </div>
             <h2>Welcome back</h2>
             <p>Please enter your credentials to access your dashboard.</p>
           </div>
