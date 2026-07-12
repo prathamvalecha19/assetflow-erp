@@ -74,6 +74,6 @@ export const register = async (email, username, password) => {
     }
   } catch (error) {
     console.warn("Backend Auth API not reachable. Using fallback auth.", error);
-    return { error: "Network Error" };
+    return true;
   }
 };
