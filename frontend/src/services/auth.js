@@ -56,3 +56,24 @@ export const isAuthenticated = () => {
 export const getToken = () => {
   return localStorage.getItem('token') || '';
 };
+
+export const register = async (email, username, password) => {
+  try {
+    const response = await fetch('http://localhost:8000/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, name: username, password, role: 'employee' })
+    });
+    if (response.ok) {
+      return true;
+    } else {
+      const err = await response.json();
+      return { error: err.detail || 'Registration failed' };
+    }
+  } catch (error) {
+    console.warn("Backend Auth API not reachable. Using fallback auth.", error);
+    return { error: "Network Error" };
+  }
+};

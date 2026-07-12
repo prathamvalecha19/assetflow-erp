@@ -5,6 +5,7 @@ import Sidebar from './components/Sidebar';
 import ProtectedRoute from './components/ProtectedRoute';
 
 import Login from './pages/Login';
+import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import Organization from './pages/Organization';
 import Assets from './pages/Assets';
@@ -30,7 +31,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
-        
+        <Route path="/signup" element={<Signup />} />
+
         <Route path="/" element={<ProtectedRoute><AppLayout><Navigate to="/dashboard" replace /></AppLayout></ProtectedRoute>} />
         <Route path="/dashboard" element={<ProtectedRoute><AppLayout><Dashboard /></AppLayout></ProtectedRoute>} />
         <Route path="/organization" element={<ProtectedRoute><AppLayout><Organization /></AppLayout></ProtectedRoute>} />
