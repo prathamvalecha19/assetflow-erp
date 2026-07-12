@@ -127,7 +127,7 @@ export const createBooking = async (booking) => {
     const locals = JSON.parse(localStorage.getItem('local_bookings')) || [];
     const newStart = new Date(booking.start_time);
     const newEnd = new Date(booking.end_time);
-    
+
     // Check overlap mock logic
     const overlap = locals.some(b => {
       const assetIdMatch = b.asset_id === booking.asset_id;
@@ -155,7 +155,7 @@ export const createBooking = async (booking) => {
     };
 
     localStorage.setItem('local_bookings', JSON.stringify([...locals, newLocalBooking]));
-    
+
     // Mark asset as Allocated locally
     const updatedAssets = allAssets.map(a => a.id === booking.asset_id ? { ...a, status: 'Allocated' } : a);
     localStorage.setItem('local_assets', JSON.stringify(updatedAssets));
@@ -238,7 +238,7 @@ export const updateMaintenanceStatus = async (id, updates) => {
     const newLocals = locals.map(m => {
       if (m.id === id) {
         const updated = { ...m, ...updates };
-        
+
         if (updates.status === 'Resolved') {
           const allAssets = JSON.parse(localStorage.getItem('local_assets')) || [];
           const updatedAssets = allAssets.map(a => a.id === m.asset_id ? { ...a, status: 'Available' } : a);
@@ -264,4 +264,21 @@ export const fetchUsers = async () => {
 };
 export const fetchCategories = async () => {
   return ['Electronics', 'Furniture', 'Vehicles', 'IT Equipment', 'Laboratory'];
+};
+
+export const createAsset = async (asset) => {
+  try {
+    const res = await fetch("http://localhost:8000/api/assets", {
+      method: "POST",
+      headers: getHeaders(),
+      body: JSON.stringify(asset)
+    });
+    if (res.ok) {
+      const newAsset = await res.json();
+      return { success: true, data: newAsset };
+    }
+  } catch (e) {
+    console.error("Local create fallback", e);
+  }
+  return { success: false };
 };
