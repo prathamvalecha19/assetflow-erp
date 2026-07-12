@@ -7,6 +7,17 @@ class UserBase(BaseModel):
     email: str
     role: str = "employee"
 
+class UserCreate(UserBase):
+    password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    email: Optional[str] = None
+
+
 class UserResponse(UserBase):
     id: int
     model_config = ConfigDict(from_attributes=True)
