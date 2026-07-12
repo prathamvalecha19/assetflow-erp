@@ -57,7 +57,15 @@ class Asset(Base):
 
     @property
     def category(self):
-        return self.category_obj.name if self.category_obj else "Uncategorized"
+        if self.category_obj:
+            return self.category_obj.name
+        return getattr(self, '_category_name', 'Uncategorized')
+
+    @category.setter
+    def category(self, value):
+        # Allow plain string assignment in tests or transient instances
+        # without a related Category object.
+        self._category_name = value
 
     @property
     def assignedTo(self):

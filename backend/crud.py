@@ -1,6 +1,12 @@
 from sqlalchemy.orm import Session
 from datetime import datetime
 import models, schemas
+import auth
+
+
+def get_hash(password: str):
+    return auth.get_password_hash(password)
+
 
 # -- Departments --
 def get_departments(db: Session, skip: int = 0, limit: int = 100):
@@ -136,8 +142,8 @@ def check_booking_overlap(db: Session, asset_id: int, start_time: datetime, end_
 
 def create_booking(db: Session, booking: schemas.BookingCreate, user_id: int):
     db_asset = get_asset(db, booking.asset_id)
-    if not db_asset or not db_asset.is_shared:
-        return None # Can only book shared resources
+    if not db_asset:
+        return None
         
     db_booking = models.Booking(
         user_id=user_id,

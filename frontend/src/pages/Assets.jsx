@@ -101,7 +101,7 @@ const Assets = () => {
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <div className="modal-header flex-between">
               <h2>Register New Asset</h2>
-              <button className="close-btn" onClick={() => setIsAddingMode(false)}>×</button>
+              <button className="close-btn" onClick={() => setIsAddingMode(false)}>Ã—</button>
             </div>
             <form onSubmit={handleAddSubmit}>
               <div className="modal-body" style={{display: 'flex', flexDirection: 'column', gap: '15px', marginTop: '10px'}}>
@@ -137,7 +137,7 @@ const Assets = () => {
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <div className="modal-header flex-between">
               <h2>Asset Details</h2>
-              <button className="close-btn" onClick={() => setSelectedAsset(null)}>×</button>
+              <button className="close-btn" onClick={() => setSelectedAsset(null)}>Ã—</button>
             </div>
             <div className="modal-body">
               <div className="asset-detail-card">
