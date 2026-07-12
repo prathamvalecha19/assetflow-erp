@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../services/auth';
-import { FiArrowRight, FiShield, FiCpu, FiTrendingUp } from 'react-icons/fi';
+import { FiArrowRight } from 'react-icons/fi';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import './Login.css';
 
 const Login = () => {
@@ -49,28 +50,13 @@ const Login = () => {
             <p>A unified platform to track, allocate, and maintain your resources with complete transparency.</p>
           </div>
 
-          <div className="feature-list">
-            <div className="feature-item fade-in-delay-1">
-              <div className="feat-icon"><FiCpu /></div>
-              <div>
-                <h3>Smart Tracking</h3>
-                <p>Real-time visibility across all locations.</p>
-              </div>
-            </div>
-            <div className="feature-item fade-in-delay-2">
-              <div className="feat-icon"><FiShield /></div>
-              <div>
-                <h3>Secure Booking</h3>
-                <p>Role-based authentication & auditing.</p>
-              </div>
-            </div>
-            <div className="feature-item fade-in-delay-3">
-              <div className="feat-icon"><FiTrendingUp /></div>
-              <div>
-                <h3>Predictive Maintenance</h3>
-                <p>Reduce downtime with proactive alerts.</p>
-              </div>
-            </div>
+          <div className="lottie-animation-wrapper fade-in-delay-1" style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
+            <DotLottieReact
+              src="https://lottie.host/07d38957-a2d1-41c1-b042-55e186e853ad/mYbzSD8O6U.lottie"
+              loop
+              autoplay
+              style={{ width: '100%', maxWidth: '350px' }}
+            />
           </div>
         </div>
       </div>
