@@ -21,8 +21,9 @@ const Signup = () => {
     try {
       const res = await register(email, name, password);
       if (res === true) {
-        // Send user to login page after successful registration
-        navigate('/login');
+        // Automatically log them in after registration
+        await login(email, password);
+        navigate('/dashboard');
       } else {
         setError(res.error || 'Registration failed.');
         setIsLoading(false);
