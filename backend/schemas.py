@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime
 from typing import Optional, List
 
@@ -11,6 +11,9 @@ class DepartmentCreate(DepartmentBase):
 
 class DepartmentResponse(DepartmentBase):
     id: int
+    head: str = "Unassigned"
+    status: str = "Active"
+    size: int = 0
     model_config = ConfigDict(from_attributes=True)
 
 # --- CATEGORIES ---
@@ -37,7 +40,8 @@ class UserCreate(UserBase):
 
 class UserResponse(UserBase):
     id: int
-    department: Optional[DepartmentResponse] = None
+    department: str = "Unassigned"
+    status: str = "Active"
     model_config = ConfigDict(from_attributes=True)
 
 class Token(BaseModel):
@@ -69,7 +73,8 @@ class AssetResponse(AssetBase):
     id: int
     asset_tag: str
     status: str
-    category: Optional[CategoryResponse] = None
+    category: str = "Uncategorized"
+    assignedTo: str = "-"
     model_config = ConfigDict(from_attributes=True)
 
 # --- ALLOCATIONS ---

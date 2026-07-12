@@ -8,14 +8,18 @@ class Department(Base):
     __tablename__ = 'departments'
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True, index=True)
-    users = relationship("User", back_populates="department")
+    users = relationship("User", back_populates="department_obj")
+
+    @property
+    def size(self):
+        return len(self.users)
 
 class Category(Base):
     __tablename__ = 'categories'
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True, index=True)
     description = Column(Text, nullable=True)
-    assets = relationship("Asset", back_populates="category")
+    assets = relationship("Asset", back_populates="category_obj")
 
 class User(Base):
     __tablename__ = 'users'
@@ -25,9 +29,13 @@ class User(Base):
     password_hash = Column(String)
     role = Column(String, default="employee") # admin, department_head, asset_manager, employee
     department_id = Column(Integer, ForeignKey('departments.id'), nullable=True)
-    department = relationship("Department", back_populates="users")
+    department_obj = relationship("Department", back_populates="users")
     bookings = relationship("Booking", back_populates="user")
     allocations = relationship("Allocation", back_populates="user")
+
+    @property
+    def department(self):
+        return self.department_obj.name if self.department_obj else "Unassigned"
 
 class Asset(Base):
     __tablename__ = 'assets'
@@ -42,10 +50,21 @@ class Asset(Base):
     is_shared = Column(Boolean, default=False)
     status = Column(String, default="Available") # Available, Allocated, Reserved, Under Maintenance, Lost, Retired, Disposed
     category_id = Column(Integer, ForeignKey('categories.id'), nullable=True)
-    category = relationship("Category", back_populates="assets")
+    category_obj = relationship("Category", back_populates="assets")
     bookings = relationship("Booking", back_populates="asset")
     maintenances = relationship("Maintenance", back_populates="asset")
     allocations = relationship("Allocation", back_populates="asset")
+
+    @property
+    def category(self):
+        return self.category_obj.name if self.category_obj else "Uncategorized"
+
+    @property
+    def assignedTo(self):
+        for alloc in self.allocations:
+            if alloc.status == "Active" and alloc.user:
+                return alloc.user.name or alloc.user.email
+        return "-"
 
 class Allocation(Base):
     __tablename__ = 'allocations'
