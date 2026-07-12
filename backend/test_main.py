@@ -28,7 +28,7 @@ client = TestClient(app)
 
 def test_create_user():
     response = client.post(
-        "/users",
+        "/api/users",
         json={"email": "admin@example.com", "password": "password123", "role": "admin", "name": "Admin User"}
     )
     assert response.status_code == 200
@@ -36,7 +36,7 @@ def test_create_user():
 
 def test_login():
     response = client.post(
-        "/token",
+        "/api/token",
         data={"username": "admin@example.com", "password": "password123"}
     )
     assert response.status_code == 200
@@ -45,14 +45,14 @@ def test_login():
 
 def test_create_department():
     name = f"IT Support_{time.time()}"
-    response = client.post("/departments", json={"name": name})
+    response = client.post("/api/departments", json={"name": name})
     assert response.status_code == 200
     assert response.json()["name"] == name
     return response.json()["id"]
 
 def test_create_category():
     name = f"Laptops_{time.time()}"
-    response = client.post("/categories", json={"name": name, "description": "Work laptops"})
+    response = client.post("/api/categories", json={"name": name, "description": "Work laptops"})
     assert response.status_code == 200
     assert response.json()["name"] == name
     return response.json()["id"]
@@ -61,7 +61,7 @@ def test_create_asset():
     token = test_login()
     cat_id = test_create_category()
     response = client.post(
-        "/assets",
+        "/api/assets",
         json={"name": "Test Laptop", "category_id": cat_id},
         headers={"Authorization": f"Bearer {token}"}
     )
@@ -77,7 +77,7 @@ def test_create_booking():
     end = (datetime.utcnow() + timedelta(hours=1)).isoformat()
     
     response = client.post(
-        "/bookings",
+        "/api/bookings",
         json={"asset_id": asset_id, "start_time": start, "end_time": end},
         headers={"Authorization": f"Bearer {token}"}
     )
@@ -86,10 +86,10 @@ def test_create_booking():
 
 def test_overlap_booking():
     token = test_login()
-    cat_id = client.get("/categories").json()[0]["id"]
+    cat_id = client.get("/api/categories").json()[0]["id"]
     
     response_asset = client.post(
-        "/assets",
+        "/api/assets",
         json={"name": "Overlap Laptop", "category_id": cat_id},
         headers={"Authorization": f"Bearer {token}"}
     )
@@ -99,13 +99,13 @@ def test_overlap_booking():
     end = (datetime.utcnow() + timedelta(hours=1)).isoformat()
     
     client.post(
-        "/bookings",
+        "/api/bookings",
         json={"asset_id": asset_id, "start_time": start, "end_time": end},
         headers={"Authorization": f"Bearer {token}"}
     )
     
     response_overlap = client.post(
-        "/bookings",
+        "/api/bookings",
         json={"asset_id": asset_id, "start_time": start, "end_time": end},
         headers={"Authorization": f"Bearer {token}"}
     )
