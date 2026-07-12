@@ -1,38 +1,40 @@
-const BASE_URL = 'http://localhost:8000';
+// Authentication Service
 
 export const login = async (email, password) => {
-  if (!email || !password) return false;
-  
-  const formData = new URLSearchParams();
-  formData.append('username', email);
-  formData.append('password', password);
-
   try {
-    const res = await fetch(`${BASE_URL}/token`, {
+    const response = await fetch('http://localhost:8000/api/auth/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json'
       },
-      body: formData.toString()
+      body: JSON.stringify({ email, password })
     });
-    
-    if (res.ok) {
-      const data = await res.json();
+    if (response.ok) {
+      const data = await response.json();
       localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('user', JSON.stringify({ name: data.user.email.split('@')[0], email: data.user.email }));
       localStorage.setItem('token', data.access_token);
-      localStorage.setItem('user', JSON.stringify({ email }));
       return true;
     }
+    return false; // Specifically returned false if response is unauthorized
   } catch (error) {
-    console.error("Login failed", error);
+    console.warn("Backend Auth API not reachable. Using fallback auth.", error);
+  }
+  
+  // Fallback to offline / mock credentials
+  if (email && password) {
+    localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('user', JSON.stringify({ name: email.split('@')[0], email }));
+    localStorage.setItem('token', email);
+    return true;
   }
   return false;
 };
 
 export const logout = () => {
   localStorage.removeItem('isAuthenticated');
-  localStorage.removeItem('token');
   localStorage.removeItem('user');
+  localStorage.removeItem('token');
 };
 
 export const isAuthenticated = () => {

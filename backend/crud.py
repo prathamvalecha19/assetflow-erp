@@ -71,18 +71,24 @@ def get_bookings(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Booking).offset(skip).limit(limit).all()
 
 def check_booking_overlap(db: Session, asset_id: int, start_time: datetime, end_time: datetime):
+    # Only check overlap against bookings that are NOT Cancelled
     return db.query(models.Booking).filter(
         models.Booking.asset_id == asset_id,
+        models.Booking.status != "Cancelled",
         models.Booking.start_time < end_time,
         models.Booking.end_time > start_time
     ).first() is not None
+
+def get_bookings(db: Session):
+    return db.query(models.Booking).all()
 
 def create_booking(db: Session, booking: schemas.BookingCreate, user_id: int):
     db_booking = models.Booking(
         user_id=user_id,
         asset_id=booking.asset_id,
         start_time=booking.start_time,
-        end_time=booking.end_time
+        end_time=booking.end_time,
+        status="Approved"
     )
     db.add(db_booking)
     
@@ -94,3 +100,50 @@ def create_booking(db: Session, booking: schemas.BookingCreate, user_id: int):
     db.commit()
     db.refresh(db_booking)
     return db_booking
+
+# -- Maintenance --
+def get_maintenances(db: Session):
+    return db.query(models.Maintenance).all()
+
+def create_maintenance(db: Session, maintenance: schemas.MaintenanceCreate):
+    db_maint = models.Maintenance(
+        asset_id=maintenance.asset_id,
+        issue=maintenance.issue,
+        priority=maintenance.priority,
+        technician=maintenance.technician,
+        status="Pending"
+    )
+    
+    # Also update asset status
+    db_asset = get_asset(db, maintenance.asset_id)
+    if db_asset:
+        db_asset.status = "maintenance"
+        
+    db.add(db_maint)
+    db.commit()
+    db.refresh(db_maint)
+    return db_maint
+
+def update_maintenance(db: Session, maintenance_id: int, updates: schemas.MaintenanceUpdate):
+    db_maint = db.query(models.Maintenance).filter(models.Maintenance.id == maintenance_id).first()
+    if not db_maint:
+        return None
+        
+    if updates.status is not None:
+        db_maint.status = updates.status
+        # Handle asset status transitions
+        if updates.status.lower() == "resolved":
+            db_asset = get_asset(db, db_maint.asset_id)
+            if db_asset:
+                db_asset.status = "available"
+        elif updates.status.lower() in ["approved", "in progress"]:
+            db_asset = get_asset(db, db_maint.asset_id)
+            if db_asset:
+                db_asset.status = "maintenance"
+                
+    if updates.technician is not None:
+        db_maint.technician = updates.technician
+        
+    db.commit()
+    db.refresh(db_maint)
+    return db_maint
