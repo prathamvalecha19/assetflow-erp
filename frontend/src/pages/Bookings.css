@@ -1,0 +1,25 @@
+.bookings-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.calendar-placeholder {
+  background: var(--card-bg);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--border-radius);
+  height: 250px;
+  color: var(--text-light);
+  text-align: center;
+}
+
+.placeholder-icon {
+  font-size: 48px;
+  color: var(--border-color);
+  margin-bottom: 16px;
+}
+
+.placeholder-content h3 {
+  color: var(--text-color);
+  margin-bottom: 8px;
+}
