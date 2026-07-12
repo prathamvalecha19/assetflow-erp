@@ -252,3 +252,16 @@ export const updateMaintenanceStatus = async (id, updates) => {
     return { success: true };
   }
 };
+
+export const fetchAssets = getAssets;
+export const fetchBookings = getBookings;
+
+export const fetchDepartments = async () => {
+  return organizationData.departments;
+};
+export const fetchUsers = async () => {
+  return organizationData.employees;
+};
+export const fetchCategories = async () => {
+  return ['Electronics', 'Furniture', 'Vehicles', 'IT Equipment', 'Laboratory'];
+};

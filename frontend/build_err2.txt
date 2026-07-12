@@ -1,0 +1,355 @@
+﻿
+> frontend@1.0.0 build
+> vite build
+
+[36mvite v8.1.4 [32mbuilding client environment for production...[36m[39m
+[2K
+transforming...Γ£ô 54 modules transformed.
+rendering chunks...
+node.exe : [31mΓ£ù[39m 
+Build failed in 176ms
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
+    + CategoryInfo         
+     : NotSpecified: ([3  
+  1mΓ£ù[39m Build faile   
+ d in 176ms:String) [],    
+ RemoteException
+    + FullyQualifiedErrorI 
+   d : NativeCommandError
+ 
+[31merror during build:
+[31mBuild failed with 6 
+errors:
+
+[31m[MISSING_EXPORT] 
+[0m"fetchAssets" is not 
+exported by 
+"src/services/api.js".
+   [38;5;246mΓò¡[0m[38;5
+;246mΓöÇ[0m[38;5;246m[[0
+m src/pages/Dashboard.jsx:4
+:10 [38;5;246m][0m
+   [38;5;246mΓöé[0m
+ [38;5;246m4 Γöé[0m [38;
+5;249mi[0m[38;5;249mm[0m
+[38;5;249mp[0m[38;5;249m
+o[0m[38;5;249mr[0m[38;5
+;249mt[0m[38;5;249m [0m
+[38;5;249m{[0m[38;5;249m 
+[0mfetchAssets[38;5;249m,
+[0m[38;5;249m [0m[38;5;
+249mf[0m[38;5;249me[0m[
+38;5;249mt[0m[38;5;249mc
+[0m[38;5;249mh[0m[38;5;2
+49mB[0m[38;5;249mo[0m[3
+8;5;249mo[0m[38;5;249mk[
+0m[38;5;249mi[0m[38;5;24
+9mn[0m[38;5;249mg[0m[38
+;5;249ms[0m[38;5;249m [0
+m[38;5;249m}[0m[38;5;249
+m [0m[38;5;249mf[0m[38;
+5;249mr[0m[38;5;249mo[0m
+[38;5;249mm[0m[38;5;249m
+ [0m[38;5;249m"[0m[38;5
+;249m.[0m[38;5;249m.[0m
+[38;5;249m/[0m[38;5;249ms
+[0m[38;5;249me[0m[38;5;
+249mr[0m[38;5;249mv[0m[
+38;5;249mi[0m[38;5;249mc
+[0m[38;5;249me[0m[38;5;2
+49ms[0m[38;5;249m/[0m[3
+8;5;249ma[0m[38;5;249mp[
+0m[38;5;249mi[0m[38;5;24
+9m"[0m[38;5;249m;[0m
+ [38;5;240m  Γöé[0m      
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓö
+ÇΓöÇΓöÇΓöÇ  
+ [38;5;240m  Γöé[0m      
+         
+Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ 
+Missing export
+[38;5;246mΓöÇΓöÇΓöÇΓò»[0m
+
+[31m[MISSING_EXPORT] 
+[0m"fetchBookings" is not 
+exported by 
+"src/services/api.js".
+   [38;5;246mΓò¡[0m[38;5
+;246mΓöÇ[0m[38;5;246m[[0
+m src/pages/Dashboard.jsx:4
+:23 [38;5;246m][0m
+   [38;5;246mΓöé[0m
+ [38;5;246m4 Γöé[0m [38;
+5;249mi[0m[38;5;249mm[0m
+[38;5;249mp[0m[38;5;249m
+o[0m[38;5;249mr[0m[38;5
+;249mt[0m[38;5;249m [0m
+[38;5;249m{[0m[38;5;249m 
+[0m[38;5;249mf[0m[38;5;
+249me[0m[38;5;249mt[0m[
+38;5;249mc[0m[38;5;249mh
+[0m[38;5;249mA[0m[38;5;2
+49ms[0m[38;5;249ms[0m[3
+8;5;249me[0m[38;5;249mt[
+0m[38;5;249ms[0m[38;5;24
+9m,[0m[38;5;249m [0mfetc
+hBookings[38;5;249m [0m[
+38;5;249m}[0m[38;5;249m 
+[0m[38;5;249mf[0m[38;5;2
+49mr[0m[38;5;249mo[0m[3
+8;5;249mm[0m[38;5;249m [
+0m[38;5;249m"[0m[38;5;24
+9m.[0m[38;5;249m.[0m[38
+;5;249m/[0m[38;5;249ms[0
+m[38;5;249me[0m[38;5;249
+mr[0m[38;5;249mv[0m[38;
+5;249mi[0m[38;5;249mc[0m
+[38;5;249me[0m[38;5;249m
+s[0m[38;5;249m/[0m[38;5
+;249ma[0m[38;5;249mp[0m
+[38;5;249mi[0m[38;5;249m"
+[0m[38;5;249m;[0m
+ [38;5;240m  Γöé[0m      
+                 ΓöÇΓöÇΓöÇΓ
+öÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓ
+öÇ  
+ [38;5;240m  Γöé[0m      
+                       Γò░Γ
+öÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ 
+Missing export
+[38;5;246mΓöÇΓöÇΓöÇΓò»[0m
+
+[31m[MISSING_EXPORT] 
+[0m"fetchDepartments" is 
+not exported by 
+"src/services/api.js".
+   [38;5;246mΓò¡[0m[38;5
+;246mΓöÇ[0m[38;5;246m[[0
+m src/pages/Organization.js
+x:3:10 [38;5;246m][0m
+   [38;5;246mΓöé[0m
+ [38;5;246m3 Γöé[0m [38;
+5;249mi[0m[38;5;249mm[0m
+[38;5;249mp[0m[38;5;249m
+o[0m[38;5;249mr[0m[38;5
+;249mt[0m[38;5;249m [0m
+[38;5;249m{[0m[38;5;249m 
+[0mfetchDepartments[38;5;
+249m,[0m[38;5;249m [0m[
+38;5;249mf[0m[38;5;249me
+[0m[38;5;249mt[0m[38;5;2
+49mc[0m[38;5;249mh[0m[3
+8;5;249mU[0m[38;5;249ms[
+0m[38;5;249me[0m[38;5;24
+9mr[0m[38;5;249ms[0m[38
+;5;249m,[0m[38;5;249m [0
+m[38;5;249mf[0m[38;5;249
+me[0m[38;5;249mt[0m[38;
+5;249mc[0m[38;5;249mh[0m
+[38;5;249mC[0m[38;5;249m
+a[0m[38;5;249mt[0m[38;5
+;249me[0m[38;5;249mg[0m
+[38;5;249mo[0m[38;5;249mr
+[0m[38;5;249mi[0m[38;5;
+249me[0m[38;5;249ms[0m[
+38;5;249m [0m[38;5;249m}
+[0m[38;5;249m [0m[38;5;2
+49mf[0m[38;5;249mr[0m[3
+8;5;249mo[0m[38;5;249mm[
+0m[38;5;249m [0m[38;5;24
+9m"[0m[38;5;249m.[0m[38
+;5;249m.[0m[38;5;249m/[0
+m[38;5;249ms[0m[38;5;249
+me[0m[38;5;249mr[0m[38;
+5;249mv[0m[38;5;249mi[0m
+[38;5;249mc[0m[38;5;249m
+e[0m[38;5;249ms[0m[38;5
+;249m/[0m[38;5;249ma[0m
+[38;5;249mp[0m[38;5;249mi
+[0m[38;5;249m"[0m[38;5;
+249m;[0m
+ [38;5;240m  Γöé[0m      
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö
+ÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+ [38;5;240m  Γöé[0m      
+            Γò░ΓöÇΓöÇΓöÇΓöÇ
+ΓöÇΓöÇΓöÇΓöÇΓöÇ Missing 
+export
+[38;5;246mΓöÇΓöÇΓöÇΓò»[0m
+
+[31m[MISSING_EXPORT] 
+[0m"fetchUsers" is not 
+exported by 
+"src/services/api.js".
+   [38;5;246mΓò¡[0m[38;5
+;246mΓöÇ[0m[38;5;246m[[0
+m src/pages/Organization.js
+x:3:28 [38;5;246m][0m
+   [38;5;246mΓöé[0m
+ [38;5;246m3 Γöé[0m [38;
+5;249mi[0m[38;5;249mm[0m
+[38;5;249mp[0m[38;5;249m
+o[0m[38;5;249mr[0m[38;5
+;249mt[0m[38;5;249m [0m
+[38;5;249m{[0m[38;5;249m 
+[0m[38;5;249mf[0m[38;5;
+249me[0m[38;5;249mt[0m[
+38;5;249mc[0m[38;5;249mh
+[0m[38;5;249mD[0m[38;5;2
+49me[0m[38;5;249mp[0m[3
+8;5;249ma[0m[38;5;249mr[
+0m[38;5;249mt[0m[38;5;24
+9mm[0m[38;5;249me[0m[38
+;5;249mn[0m[38;5;249mt[0
+m[38;5;249ms[0m[38;5;249
+m,[0m[38;5;249m [0mfetch
+Users[38;5;249m,[0m[38;5
+;249m [0m[38;5;249mf[0m
+[38;5;249me[0m[38;5;249mt
+[0m[38;5;249mc[0m[38;5;
+249mh[0m[38;5;249mC[0m[
+38;5;249ma[0m[38;5;249mt
+[0m[38;5;249me[0m[38;5;2
+49mg[0m[38;5;249mo[0m[3
+8;5;249mr[0m[38;5;249mi[
+0m[38;5;249me[0m[38;5;24
+9ms[0m[38;5;249m [0m[38
+;5;249m}[0m[38;5;249m [0
+m[38;5;249mf[0m[38;5;249
+mr[0m[38;5;249mo[0m[38;
+5;249mm[0m[38;5;249m [0m
+[38;5;249m"[0m[38;5;249m
+.[0m[38;5;249m.[0m[38;5
+;249m/[0m[38;5;249ms[0m
+[38;5;249me[0m[38;5;249mr
+[0m[38;5;249mv[0m[38;5;
+249mi[0m[38;5;249mc[0m[
+38;5;249me[0m[38;5;249ms
+[0m[38;5;249m/[0m[38;5;2
+49ma[0m[38;5;249mp[0m[3
+8;5;249mi[0m[38;5;249m"[
+0m[38;5;249m;[0m
+ [38;5;240m  Γöé[0m      
+                      ΓöÇΓö
+ÇΓöÇΓöÇΓöÇΓö¼ΓöÇΓöÇΓöÇΓöÇ  
+ [38;5;240m  Γöé[0m      
+                           
+Γò░ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ 
+Missing export
+[38;5;246mΓöÇΓöÇΓöÇΓò»[0m
+
+[31m[MISSING_EXPORT] 
+[0m"fetchCategories" is 
+not exported by 
+"src/services/api.js".
+   [38;5;246mΓò¡[0m[38;5
+;246mΓöÇ[0m[38;5;246m[[0
+m src/pages/Organization.js
+x:3:40 [38;5;246m][0m
+   [38;5;246mΓöé[0m
+ [38;5;246m3 Γöé[0m [38;
+5;249mi[0m[38;5;249mm[0m
+[38;5;249mp[0m[38;5;249m
+o[0m[38;5;249mr[0m[38;5
+;249mt[0m[38;5;249m [0m
+[38;5;249m{[0m[38;5;249m 
+[0m[38;5;249mf[0m[38;5;
+249me[0m[38;5;249mt[0m[
+38;5;249mc[0m[38;5;249mh
+[0m[38;5;249mD[0m[38;5;2
+49me[0m[38;5;249mp[0m[3
+8;5;249ma[0m[38;5;249mr[
+0m[38;5;249mt[0m[38;5;24
+9mm[0m[38;5;249me[0m[38
+;5;249mn[0m[38;5;249mt[0
+m[38;5;249ms[0m[38;5;249
+m,[0m[38;5;249m [0m[38;
+5;249mf[0m[38;5;249me[0m
+[38;5;249mt[0m[38;5;249m
+c[0m[38;5;249mh[0m[38;5
+;249mU[0m[38;5;249ms[0m
+[38;5;249me[0m[38;5;249mr
+[0m[38;5;249ms[0m[38;5;
+249m,[0m[38;5;249m [0mfe
+tchCategories[38;5;249m [
+0m[38;5;249m}[0m[38;5;24
+9m [0m[38;5;249mf[0m[38
+;5;249mr[0m[38;5;249mo[0
+m[38;5;249mm[0m[38;5;249
+m [0m[38;5;249m"[0m[38;
+5;249m.[0m[38;5;249m.[0m
+[38;5;249m/[0m[38;5;249m
+s[0m[38;5;249me[0m[38;5
+;249mr[0m[38;5;249mv[0m
+[38;5;249mi[0m[38;5;249mc
+[0m[38;5;249me[0m[38;5;
+249ms[0m[38;5;249m/[0m[
+38;5;249ma[0m[38;5;249mp
+[0m[38;5;249mi[0m[38;5;2
+49m"[0m[38;5;249m;[0m
+ [38;5;240m  Γöé[0m      
+                           
+       ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö
+ÇΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ  
+ [38;5;240m  Γöé[0m      
+                           
+              Γò░ΓöÇΓöÇΓöÇΓ
+öÇΓöÇΓöÇΓöÇΓöÇΓöÇ Missing 
+export
+[38;5;246mΓöÇΓöÇΓöÇΓò»[0m
+
+...[31m
+    at aggregateBindingErro
+rsIntoJsError (file:///C:/U
+sers/KORI%20SAHIL/Desktop/h
+ackathon/assetflow-erp/fron
+tend/node_modules/rolldown/
+dist/shared/error-BHRSI0R7.
+mjs:48:18)
+    at unwrapBindingResult 
+(file:///C:/Users/KORI%20SA
+HIL/Desktop/hackathon/asset
+flow-erp/frontend/node_modu
+les/rolldown/dist/shared/er
+ror-BHRSI0R7.mjs:18:128)
+    at #build (file:///C:/U
+sers/KORI%20SAHIL/Desktop/h
+ackathon/assetflow-erp/fron
+tend/node_modules/rolldown/
+dist/shared/rolldown-build-
+CtPvmZgJ.mjs:3276:34)
+    at async 
+buildEnvironment (file:///C
+:/Users/KORI%20SAHIL/Deskto
+p/hackathon/assetflow-erp/f
+rontend/node_modules/vite/d
+ist/node/chunks/node.js:330
+11:66)
+    at async Object.build (
+file:///C:/Users/KORI%20SAH
+IL/Desktop/hackathon/assetf
+low-erp/frontend/node_modul
+es/vite/dist/node/chunks/no
+de.js:33433:19)
+    at async 
+Object.buildApp (file:///C:
+/Users/KORI%20SAHIL/Desktop
+/hackathon/assetflow-erp/fr
+ontend/node_modules/vite/di
+st/node/chunks/node.js:3343
+0:153)
+    at async 
+CAC.<anonymous> (file:///C:
+/Users/KORI%20SAHIL/Desktop
+/hackathon/assetflow-erp/fr
+ontend/node_modules/vite/di
+st/node/cli.js:776:3) {
+  errors: [Getter/Setter]
+}[39m
